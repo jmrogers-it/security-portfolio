@@ -1,6 +1,6 @@
 # Operation Dead Deploy
 
-*Investigating a resource group failing governance standards*
+*Investigating a suspicious resource group (naming conventions)*
 
 ## Scenario
 
