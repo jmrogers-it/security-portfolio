@@ -4,7 +4,7 @@
 
 ## Scenario
 
-A junior intern was given temporary Contributor access to spin up a test environment. The intern was not familiar with the company's governance standards and deployed non-compliant resources. I needed to review resource groups and resources, identify what governance failed, and document the evidence. I had Reader access to everything the intern touched.
+A resource group appeared in the subscription that doesn't follow the company naming conventions. Determine what was deployed, who deployed it, and why governance didn't block it. Reader access only.
 
 ## Environment
 
@@ -32,9 +32,9 @@ I clicked into the Deployments tab to gather additional information about the re
 
 ### Stage 4 — Why weren't naming conventions enforced?
 
-The company has a policy assigned to its resource groups that's supposed to enforce naming conventions, so I had to find out why it wasn't being enforced here. I looked at the group's policy compliance and noticed a related non-compliant policy.
+The subscription has a policy assigned to its resource groups that's supposed to enforce naming conventions, so I had to find out why it wasn't being enforced here. I looked at the group's policy compliance page and noticed there were resources showing up as non-compliant against the naming policy.
 
-The non-compliant policy was set to **Audit**, which logged the non-compliant resource but still allowed it to be created.
+The policy was set to **Audit**, which logged the non-compliant resource but still allowed it to be created. Set to Deny, the same assignment would have failed the deployment at creation.
 
 ![Policy assignment detail showing the effect parameter set to Audit](../assets/week-1-stage-four-screenshot.png)
 
