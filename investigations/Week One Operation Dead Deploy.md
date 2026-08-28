@@ -16,19 +16,19 @@ Live multi-user Azure training tenant, Reader access.
 
 I reviewed all the resource groups within the subscription and identified one that didn't follow the company / Microsoft naming conventions. Because this resource group didn't match the naming standards, it was flagged as an anomaly and needed to be investigated further.
 
-![Resource group list with one entry breaking the naming convention](assets/week-1-stage-one-screenshot.png)
+![Resource group list with one entry breaking the naming convention](../assets/week-1-stage-one-screenshot.png)
 
 ### Stage 2 — Inspect the payload
 
 I clicked into the resource group and found one deployed resource: a storage account. I opened the tags to see what information I could gather about who created it. Multiple tags had been added, and those tags identified the resource group as having been deployed by a company intern.
 
-![Storage account tags showing cost-center, environment, intern-flag, and owner values](assets/week-1-stage-two-screenshot.png)
+![Storage account tags showing cost-center, environment, intern-flag, and owner values](../assets/week-1-stage-two-screenshot.png)
 
 ### Stage 3 — Trace the deployment
 
 I clicked into the Deployments tab to gather additional information about the resource group and resource. The deployment name also didn't match the required naming conventions.
 
-![Deployment history for the resource group showing a single succeeded deployment](assets/week-1-stage-three-screenshot.png)
+![Deployment history for the resource group showing a single succeeded deployment](../assets/week-1-stage-three-screenshot.png)
 
 ### Stage 4 — Why weren't naming conventions enforced?
 
@@ -36,7 +36,7 @@ The company has a policy assigned to its resource groups that's supposed to enfo
 
 The non-compliant policy was set to **Audit**, which logged the non-compliant resource but still allowed it to be created.
 
-![Policy assignment detail showing the effect parameter set to Audit](assets/week-1-stage-four-screenshot.png)
+![Policy assignment detail showing the effect parameter set to Audit](../assets/week-1-stage-four-screenshot.png)
 
 ## What stood out to me
 
