@@ -11,7 +11,7 @@ Contact: jimrogers3315@gmail.com · [LinkedIn URL]
 | # | Title | Focus | Write-up |
 |---|-------|-------|----------|
 | 1 | Operation Dead Deploy | Governance forensics, deployment audit trail | [Open Week 1](investigations/Week%20One%20Operation%20Dead%20Deploy.md) |
-| 2 | The Stolen Identity | App registration attack kill chain (Entra ID) | coming, week 2 |
+| 2 | The Stolen Identity | App registration attack kill chain (Entra ID) | [Open Week 2](investigations/Week%20Two%20The%20Stolen%20Identity.md) |
 | 3 | Privilege Audit | RBAC and least privilege | coming, week 3 |
 | 4 | Spin Up and Lock Down | Compute attack surface | coming, week 4 |
 | 5 | Network the Operative | Network segmentation | coming, week 5 |
