@@ -64,7 +64,7 @@ Finally, I checked the rogue app's Authentication blade and found its redirect U
 
 Why this path exists at all instead of just re-phishing credentials: by this point in a real incident the org has hardened Conditional Access, so stolen credentials get blocked due to wrong device, strange IP, MFA prompt. Consent phishing sidesteps all of it, because there is no login event for Conditional Access to evaluate. The victim is already signed in on their corporate machine, already past MFA, already on a compliant device. The link doesn't ask them to log in; it asks them to consent. The attacker piggybacks on the user's existing, fully compliant session and harvests the consent output.
 
-Mechanically: the user clicks Accept on a real Microsoft consent prompt → Entra returns an authorization code to the trap redirect → the rogue app's backend swaps that code for a token (the OAuth **authorization code flow**) → the attacker holds a delegated token acting as that user.
+Mechanically: the user clicks Accept on a real Microsoft consent prompt → Entra returns an authorization code to the trap redirect → the rogue app's backend swaps that code for a token (the OAuth authorization code flow) → the attacker holds a delegated token acting as that user.
 
 The confused deputy: This is the concept the whole finale turns on. That harvested token is only a delegated token for the custom scope. It doesn't carry the legacy app's powerful application permissions. But the scope lets the attacker trigger the legacy app's backend, and when the legacy app runs that job it uses its own privileged Graph permissions to do the work.
 
