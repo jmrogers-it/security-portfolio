@@ -20,7 +20,7 @@ I started at the legacy app's Branding & properties blade, where the incident te
 
 The second half of the entry was a least-privilege failure. Through years of access drift, the phished user had been left as an Owner of this legacy app. That leftover ownership is what made the rest of the chain possible.
 
-![Legacy sync app Branding & properties blade, with the incident team's internal note redacted](../assets/week-2-stage-one-screenshot.png)
+![Legacy sync app Branding & properties blade, with the incident team's internal note redacted](../assets/week-2-lab-screenshot-1.png)
 
 ### Stage 2 — Escalate: an attacker-minted client secret
 
@@ -32,7 +32,7 @@ Authenticating as the app meant inheriting the app's application permissions, wh
 
 The ~99-year expiry is the persistence signal. A normal secret expires in months to force rotation; a century-long one defeats rotation completely. On a flagged app during an active incident, that reads as a deliberate persistence mechanism.
 
-![Certificates & secrets blade showing a single client secret expiring 12/31/2099](../assets/week-2-stage-two-screenshot.png)
+![Certificates & secrets blade showing a single client secret expiring 12/31/2099](../assets/week-2-lab-screenshot-2.png)
 
 ### Stage 3 — Pivot: an ownership backdoor, and the blast radius
 
@@ -40,11 +40,11 @@ Two blades mattered here.
 
 API permissions: The permissions were application type (acting as the app, no user needed), granted with admin consent (already approved), on Microsoft Graph. Application-type, admin-consented, on Graph, the API that fronts mail, files, users, and directory, which means the app's reach was effectively tenant-wide. That combination is the blast radius; it's the difference between an annoying foothold and a full tenant compromise.
 
-![API permissions showing Directory.Read.All and User.Read.All as Microsoft Graph application permissions, admin consent granted](../assets/week-2-stage-three-api-permissions-screenshot.png)
+![API permissions showing Directory.Read.All and User.Read.All as Microsoft Graph application permissions, admin consent granted](../assets/week-2-lab-screenshot-3.png)
 
 Owners: A second, attacker-registered app's service principal had been added to the legacy app's Owners list. By making a second app they control a co-owner, the attacker built persistence that survives secret deletion. An owner can simply mint a fresh secret. And it's camouflaged: unlike the 99-year secret, an ownership entry has no obvious tell, and it hides in the Owners blade, a place defenders rarely think to audit. Fully evicting the attacker means noticing and removing that rogue owner.
 
-![Owners blade listing the Mad-Hat-Labs-App service principal as an owner of the legacy app](../assets/week-2-stage-three-owners-screenshot.png)
+![Owners blade listing the Mad-Hat-Labs-App service principal as an owner of the legacy app](../assets/week-2-lab-screenshot-4.png)
 
 ### Stage 4 — Persist: a consent-based backdoor via a custom scope
 
@@ -56,7 +56,7 @@ The Expose an API blade only defines the scope. No durable access exists yet at 
 
 This is a documented technique called consent phishing / illicit consent grant (MITRE ATT&CK T1528).
 
-![Expose an API blade showing an enabled custom scope, consentable by admins and users](../assets/week-2-stage-four-screenshot.png)
+![Expose an API blade showing an enabled custom scope, consentable by admins and users](../assets/week-2-lab-screenshot-5.png)
 
 ### Stage 5 — Loot: the consent-phishing URL and the confused deputy
 
@@ -72,7 +72,7 @@ It can't tell a malicious request from a legitimate one, because a valid token f
 
 Containment alone fails because the consent creates an OAuth2PermissionGrant. A password reset doesn't remove it. Revoking sign-in sessions doesn't remove it. Enforcing MFA doesn't remove it. It persists until the grant is explicitly revoked.
 
-![Mad-Hat-Labs-App Authentication blade listing two Web redirect URIs (redacted)](../assets/week-2-stage-five-screenshot.png)
+![Mad-Hat-Labs-App Authentication blade listing two Web redirect URIs (redacted)](../assets/week-2-lab-screenshot-6.png)
 
 ## What broke / what surprised me
 
