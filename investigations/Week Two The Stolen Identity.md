@@ -10,7 +10,7 @@ My job, coming in with Reader access, was to reconstruct what the attacker did s
 
 ## Environment
 
-Live multi-user Azure training tenant, Reader access on directory apps. Microsoft Entra ID (Azure AD). Investigation done in the Azure portal, App registrations (Branding & properties, Certificates & secrets, API permissions, Owners, Expose an API, Authentication blades). CyberChef used for URL decoding.
+Live multi-user Azure training tenant, Reader access on directory apps. Microsoft Entra ID (Azure AD). Investigation done in the Azure portal, App registrations (Branding & properties, Certificates & secrets, API permissions, Owners, Expose an API, Authentication blades).
 
 ## Investigation
 
@@ -18,19 +18,19 @@ Live multi-user Azure training tenant, Reader access on directory apps. Microsof
 
 I started at the legacy app's Branding & properties blade, where the incident team had recorded the entry method as an internal note. The entry wasn't a broken system, it was a stolen identity. A user had been phished through an adversary-in-the-middle (AiTM) reverse proxy. Because the user's MFA method wasn't phishing-resistant, the proxy was able to relay the entire exchange, password and MFA, and capture the session token Microsoft issued afterward.
 
-The second half of the entry was a least-privilege failure. Through years of access drift, the phished user had been left as an Owner of this legacy app. That leftover ownership is what made the rest of the chain possible.
+The second half of the entry was a least-privilege failure. Through years of access drift, the phished user had been left as an Owner of this legacy app. That leftover ownership is what made the rest of the chain possible. The user no longer appears in the app's Owners list (the only owner shown during my review was the rogue app's service principal, covered in Stage 3), so their original ownership comes from the incident record, not from the current configuration.
 
 ![Legacy sync app Branding & properties blade, with the incident team's internal note redacted](../assets/week-2-lab-screenshot-1.png)
 
 ### Stage 2 — Escalate: an attacker-minted client secret
 
-I opened Certificates & secrets → Client secrets. There was one secret, and the tell was in the Expires column, which was dated nearly a century out.
+I opened Certificates & secrets → Client secrets. There was one secret, and the tell was in the Expires column, which was dated 12/31/2099, more than 70 years out.
 
 A phished user only has that user's access, and this user was low-privilege. Operating as them would be capped at their ceiling. So, the attacker used the leftover Owner rights to write a new credential onto the app. That secret let them authenticate as the app itself through the OAuth client credentials flow.
 
 Authenticating as the app meant inheriting the app's application permissions, which have no user ceiling. That's what makes it an escalation and not lateral movement. The user's limited access stops being the ceiling entirely.
 
-The ~99-year expiry is the persistence signal. A normal secret expires in months to force rotation; a century-long one defeats rotation completely. On a flagged app during an active incident, that reads as a deliberate persistence mechanism.
+The 2099 expiry is the persistence signal. A normal secret expires in months to force rotation; one that lasts more than 70 years defeats rotation completely. On a flagged app during an active incident, that reads as a deliberate persistence mechanism.
 
 ![Certificates & secrets blade showing a single client secret expiring 12/31/2099](../assets/week-2-lab-screenshot-2.png)
 
@@ -38,11 +38,11 @@ The ~99-year expiry is the persistence signal. A normal secret expires in months
 
 Two blades mattered here.
 
-API permissions: The permissions were application type (acting as the app, no user needed), granted with admin consent (already approved), on Microsoft Graph. Application-type, admin-consented, on Graph, the API that fronts mail, files, users, and directory, which means the app's reach was effectively tenant-wide. That combination is the blast radius; it's the difference between an annoying foothold and a full tenant compromise.
+API permissions: The app held two Microsoft Graph permissions, Directory.Read.All and User.Read.All. Both were application type (acting as the app, no user needed) and granted with admin consent (already approved). Neither one reaches mail or files or allows changes, but together they let the app read the entire directory with no signed-in user: every user's full profile, plus groups, directory roles, devices, and other app registrations. That combination is the blast radius. It gives the attacker a complete, unattended map of the tenant, including who holds which roles and where to aim next.
 
 ![API permissions showing Directory.Read.All and User.Read.All as Microsoft Graph application permissions, admin consent granted](../assets/week-2-lab-screenshot-3.png)
 
-Owners: A second, attacker-registered app's service principal had been added to the legacy app's Owners list. By making a second app they control a co-owner, the attacker built persistence that survives secret deletion. An owner can simply mint a fresh secret. And it's camouflaged: unlike the 99-year secret, an ownership entry has no obvious tell, and it hides in the Owners blade, a place defenders rarely think to audit. Fully evicting the attacker means noticing and removing that rogue owner.
+Owners: A second, attacker-registered app's service principal had been added to the legacy app's Owners list. By making a second app they control a co-owner, the attacker built persistence that survives secret deletion. An owner can simply mint a fresh secret. And it's camouflaged: unlike the 2099 secret, an ownership entry has no obvious tell, and it hides in the Owners blade, a place defenders rarely think to audit. Fully evicting the attacker means noticing and removing that rogue owner.
 
 ![Owners blade listing the Mad-Hat-Labs-App service principal as an owner of the legacy app](../assets/week-2-lab-screenshot-4.png)
 
