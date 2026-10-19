@@ -5,7 +5,7 @@ Documented cloud security investigations, built in a live Azure tenant
 
 Target role: SOC Analyst / Security Analyst
 Currently: IT Support Specialist | Aurora, IL
-Contact: jimrogers3315@gmail.com · [LinkedIn URL]
+Contact: jim@jimrogers.dev · linkedin.com/in/jimrogersdev
 
 ## Investigations
 | # | Title | Focus | Write-up |
