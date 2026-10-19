@@ -3,8 +3,8 @@
 Documented cloud security investigations, built in a live Azure tenant
 (Mad Hat Labs, a multi-user training environment).
 
-Target role: SOC Analyst / Security Analyst
-Currently: IT Support Specialist | Aurora, IL
+Target role: SOC Analyst / Security Analyst\
+Currently: IT Support Specialist | Aurora, IL\
 Contact: [jim@jimrogers.dev](mailto:jim@jimrogers.dev) · [https://linkedin.com/in/jimrogersdev](https://linkedin.com/in/jimrogersdev)
 
 ## Investigations
