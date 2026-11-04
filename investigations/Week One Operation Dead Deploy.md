@@ -32,7 +32,7 @@ I clicked into the Deployments tab to gather additional information about the re
 
 ### Stage 4 — Why weren't naming conventions enforced?
 
-A naming policy is assigned at the subscription level and inherited by its resource groups, so it's supposed to enforce naming conventions. So I had to find out why it wasn't being enforced here. I looked at the group's policy compliance page and noticed there were resources showing up as non-compliant against the naming policy.
+A naming policy is assigned at the subscription level and inherited by its resource groups, so it should have enforced naming conventions here. I had to find out why it didn't. I looked at the group's policy compliance page and noticed there were resources showing up as non-compliant against the naming policy.
 
 The policy was set to **Audit**, which logged the non-compliant resource but still allowed it to be created. Set to Deny, the same assignment would have failed the deployment at creation.
 
