@@ -20,7 +20,7 @@ I reviewed all the resource groups within the subscription and identified one th
 
 ### Stage 2 — Inspect the payload
 
-I clicked into the resource group and found one deployed resource: a storage account. I opened the tags to see what information I could gather about who created it. Multiple tags had been added, and those tags identified the resource group as having been deployed by a company intern.
+I clicked into the resource group and found one deployed resource: a storage account. I opened the tags to see what information I could gather about who created it. Multiple tags had been added, and those tags identified the storage account as having been deployed by a company intern.
 
 ![Storage account tags showing cost-center, environment, intern-flag, and owner values](../assets/week-1-stage-two-screenshot.png)
 
@@ -32,7 +32,7 @@ I clicked into the Deployments tab to gather additional information about the re
 
 ### Stage 4 — Why weren't naming conventions enforced?
 
-The subscription has a policy assigned to its resource groups that's supposed to enforce naming conventions, so I had to find out why it wasn't being enforced here. I looked at the group's policy compliance page and noticed there were resources showing up as non-compliant against the naming policy.
+A naming policy is assigned at the subscription level and inherited by its resource groups, so it's supposed to enforce naming conventions. So I had to find out why it wasn't being enforced here. I looked at the group's policy compliance page and noticed there were resources showing up as non-compliant against the naming policy.
 
 The policy was set to **Audit**, which logged the non-compliant resource but still allowed it to be created. Set to Deny, the same assignment would have failed the deployment at creation.
 
@@ -50,5 +50,5 @@ This non-compliant resource was the result of a legitimate deployment created wi
 
 - The larger an Azure environment becomes, the more important it is to enforce consistent policies.
 - Tags contain a lot of valuable information about ownership, cost, and lifecycle.
-- Every resource has an audit trail in the form of logs. These can be correlated with security alerts to build an incident timeline.
+- The Activity Log keeps an audit trail of who created, changed, or deleted each resource (90 days by default). Data access like reading blobs needs diagnostic settings turned on. These can be correlated with security alerts to build an incident timeline.
 - Make sure the parameters of your policies match the desired policy outcome.
